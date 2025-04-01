@@ -13,6 +13,7 @@ while True:
         break
     elif choice == "1":
         # ----- Config du switch -----
+        #TODO regex checking onname
         switch_name = input("Name of the Switch : ")
         switch_nb_int = int_input("Number of interfaces : ",1,48)
         sw = Switch(switch_name, switch_nb_int)
@@ -23,6 +24,7 @@ while True:
             choice = input("Enter your choice : ")
             if choice == "0":
                 break
+            
             elif choice == "1":
                 nb_vlans = int_input("How many vlans ? ",0)
 
@@ -38,6 +40,7 @@ while True:
                     else:
                         sw.add_vlan(vlan_id, vlan_name)
                         i += 1 
+            
             elif choice == "2.":
                 # ----- Config Trunk ------
                 trunk_interfaces = []
