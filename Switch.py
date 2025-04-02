@@ -26,7 +26,7 @@ class Switch:
         """
         if mode in ["client", "server"]:
             #TODO regex checking for domaine & password
-            self.vtp_config = {"domain": domain, "password": password, "mode": mode}
+            self.vtp = {"domain": domain, "password": password, "mode": mode}
             return True
         return False
     
@@ -84,8 +84,9 @@ class Switch:
             if interface['mode'] == 'access':
                 script += f"switchport access vlan {interface['vlans']}\n"
             elif interface['mode'] == 'trunk':
-                vlans = ",".join(str(vlan["id"]) for vlan in interface['vlans'])
-                script += f"switchport trunk allowed vlan {vlans}\n"
+                if self.vlans and self.vlans != interface['vlans']:
+                    vlans = ",".join(str(vlan["id"]) for vlan in interface['vlans'])
+                    script += f"switchport trunk allowed vlan {vlans}\n"
             script += " exit\n"
         script += "-" * 50 + "\n\n"
 
@@ -93,7 +94,7 @@ class Switch:
         script += "-" * 50 + "\n"
         if self.vtp:
             script += f"vtp mode {self.vtp["mode"]}\n"
-            script += f"vtp domain {self.vtp["name"]}\n"
+            script += f"vtp domain {self.vtp["domain"]}\n"
             script += f"vtp password {self.vtp["password"]}\n"
             script += "exit\n"
         script += "-" * 50 + "\n\n"

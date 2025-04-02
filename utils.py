@@ -1,3 +1,5 @@
+import json
+
 def int_input(question:str, min:int=None, max:int=None):
     while True:
         try:
@@ -32,3 +34,13 @@ def subnet_mask_to_cidr(mask: str) -> str:
     # Convertir chaque octet en binaire et compter les bits à 1
     cidr = sum(bin(int(octet)).count('1') for octet in mask.split('.'))
     return f"/{cidr}"
+
+def save_config(file:str, data:dict):
+    # Écriture dans un fichier JSON
+    with open(file, "w") as fichier:
+        json.dump(data, fichier, indent=4)  # `indent=4` pour une meilleure lisibilité
+
+def load_config(file: str) -> dict:
+    # Lecture depuis le fichier JSON
+    with open(file, "r") as fichier:
+        return json.load(fichier)
