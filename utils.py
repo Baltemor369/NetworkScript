@@ -18,3 +18,17 @@ def closed_question(question:str, answers:list[str]):
             return answer
     
     return None
+
+def subnet_mask_to_cidr(mask: str) -> str:
+    """
+    Convertit un masque de sous-réseau en notation CIDR.
+
+    Args:
+        mask (str): Masque de sous-réseau au format '255.255.255.0'.
+
+    Returns:
+        str: Notation CIDR correspondante (ex: '/24').
+    """
+    # Convertir chaque octet en binaire et compter les bits à 1
+    cidr = sum(bin(int(octet)).count('1') for octet in mask.split('.'))
+    return f"/{cidr}"

@@ -91,12 +91,20 @@ class Switch:
 
         script += "VTP Configuration :\n"
         script += "-" * 50 + "\n"
-        script += f"vtp mode {self.vtp["mode"]}\n"
-        script += f"vtp domain {self.vtp["name"]}\n"
-        script += f"vtp password {self.vtp["password"]}\n"
-        script += "exit\n"
+        if self.vtp:
+            script += f"vtp mode {self.vtp["mode"]}\n"
+            script += f"vtp domain {self.vtp["name"]}\n"
+            script += f"vtp password {self.vtp["password"]}\n"
+            script += "exit\n"
         script += "-" * 50 + "\n\n"
 
+        script += "VLAN Configuration:\n"
+        script += "-" * 50 + "\n"
+        for vlan in self.vlans:
+            script += f"vlan {vlan['id']}\n"
+            script += f"name {vlan['name']}\n"
+            script += "exit\n"
+        script += "-" * 50 + "\n\n"
         
         script += "\nFin de configuration des interfaces access."
         return script
