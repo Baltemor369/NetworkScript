@@ -83,10 +83,17 @@ class Routeur:
             "routes": self.routes,
         }
     
-    def load_config(self, config:dict):
-        self.hostname = config["hostname"]
-        self.interfaces = config["interfaces"]
-        self.routes = config["routes"]
+    @classmethod
+    def load_config(cls, config: dict):
+        """
+        Méthode pour recréer un Routeur à partir d'une configuration.
+        :param config: Dictionnaire contenant la configuration du routeur.
+        :return: Instance de Routeur.
+        """
+        router = cls(config["hostname"], config.get("nb_intf", 0))  # Crée une nouvelle instance
+        router.interfaces = config["interfaces"]
+        router.routes = config["routes"]
+        return router
 
     def generate_config(self):
         """

@@ -75,11 +75,18 @@ class Switch:
             "interfaces": self.interfaces,
         }
     
-    def load_config(self, config:dict):
-        self.name = config["name"]
-        self.vtp = config["vtp"]
-        self.vlans = config["vlans"]
-        self.interfaces = config["interfaces"]
+    @classmethod
+    def load_config(cls, config:dict):
+        """
+        Méthode pour recréer un Switch à partir d'une configuration.
+        :param config: Dictionnaire contenant la configuration du switch.
+        :return: Instance de Switch.
+        """
+        switch = cls(config["name"])  # Crée une nouvelle instance
+        switch.vtp = config["vtp"]
+        switch.vlans = config["vlans"]
+        switch.interfaces = config["interfaces"]
+        return switch
     
     def generate_config(self):
         """

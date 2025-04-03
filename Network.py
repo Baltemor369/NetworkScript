@@ -24,7 +24,7 @@ class Network:
         self.name = config["name"]
         self.routeurs = [Routeur.load_config(routeur_config) for routeur_config in config["routeurs"]]
         self.switchs = [Switch.load_config(switch_config) for switch_config in config["switchs"]]
-        
+
     def generate_config(self):
         """
         Génère un script de configuration.

@@ -5,7 +5,6 @@ from Network import Network
 from Routeur import Routeur
 
 print('-'*10 + " Network Configuration " + "-"*10+"\n")
-#TODO load config from the file
 net = Network("localhost")
 net.load_config(load_config(FILE))
 

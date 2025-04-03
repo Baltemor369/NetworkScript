@@ -1,5 +1,12 @@
 {
     "name": "localhost",
     "routeurs": [],
-    "switchs": []
+    "switchs": [
+        {
+            "name": "sw1",
+            "vtp": {},
+            "vlans": [],
+            "interfaces": []
+        }
+    ]
 }
