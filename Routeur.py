@@ -38,7 +38,8 @@ class Routeur:
             "subnet_mask": subnet_mask,
             "description": description
         })
-
+        return True
+    
     def add_route(self, network_address: str, subnet_mask: str, next_hop: str):
         """
         Ajoute une route statique au routeur.
@@ -56,6 +57,7 @@ class Routeur:
             "subnet_mask": subnet_mask,
             "next_hop": next_hop
         })
+        return True
 
     def add_dhcp_helper(self, interface_id: str, helper_address: str):
         """
@@ -70,7 +72,9 @@ class Routeur:
         for intf in self.interfaces:
             if intf["id"] == interface_id:
                 intf["dhcp_helper"] = helper_address
-                break
+                return True
+        
+        return False
 
     def generate_config(self):
         """

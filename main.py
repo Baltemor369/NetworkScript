@@ -113,5 +113,14 @@ while True:
                 intf = input("Nom de l'interface : ")
                 ip_add = input("IP: ")
                 subnet_mask = input("Masque de sous-réseau: ")
-                description = input("Description (optionel): ")
-                rt.add_interface(intf, ip_add, subnet_mask, description)
+                dhcp_helper = input("DHCP_helper(optionnel): ")
+                description = input("Description (optionnel): ")
+                print(rt.add_interface(intf, ip_add, subnet_mask, description))
+                if dhcp_helper:
+                    print(rt.add_dhcp_helper(intf, dhcp_helper))
+            elif choice == "3":
+                # add static route
+                network_add = input("Adresse réseau: ")
+                subnet_mask = input("Masque de sous-réseau: ")
+                next_hop = input("Passerelle: ")
+                print(rt.add_route(network_add, subnet_mask, next_hop))
