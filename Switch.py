@@ -1,12 +1,11 @@
 class Switch:
-    def __init__(self, name, nb_interfaces):
+    def __init__(self, name):
         """
         Initialise un objet Switch.
         :param name: Nom du switch.
         :param nb_interfaces: Nombre total d'interfaces sur le switch.
         """
         self.name = name
-        self.nb_interfaces = nb_interfaces
         self.vtp = {}
         self.vlans = []
         self.interfaces = []
@@ -30,24 +29,20 @@ class Switch:
             return True
         return False
     
-    def add_interface(self, interface_id:str, mode:str, vlans:list):
+    def add_interface(self, interface_id:str, mode:str, vlans:list, description:str=""):
         """
         Ajoute ou met à jour une interface au switch.
         :param interface_id: Nom ou numéro de l'interface (ex: "GigabitEthernet0/1").
         :param mode: Mode d'interface (access/trunk).
-        :param kwargs: Options spécifiques pour la configuration (ex: vlan, description).
+        :param vlans: Liste des VLANs associées à l'interface.
+        :param description: Description de l'interface.
         """
         # Validation du mode
         if mode not in ["access", "trunk"]:
             return False
         
-        if mode == "access":
-            self.interfaces.append({"name": interface_id, "mode": mode, "vlans": vlans})
-            return True
-        elif mode == "trunk":
-            self.interfaces.append({"name": interface_id, "mode": mode, "vlans": vlans})
-            return True
-        return False
+        self.interfaces.append({"name": interface_id, "mode": mode, "vlans": vlans, "description": description})
+        return True
 
 
     def reset_interface(self, interface_number:int):
@@ -76,17 +71,27 @@ class Switch:
         """
         Génère un script de configuration.
         """
-        script = "Interfaces Configuration:\n"
+        script = f"\nSwitch {self.name}\n"
+        
+        script += "Interfaces Trunk Configuration:\n"
         script += "-" * 50 + "\n"
         for interface in self.interfaces:
             script += f"interface {interface['name']}\n"
-            script += f"switchport mode {interface["mode"]}\n"
-            if interface['mode'] == 'access':
-                script += f"switchport access vlan {interface['vlans']}\n"
-            elif interface['mode'] == 'trunk':
+            if interface["mode"] == "trunk":
+                script += f"switchport mode trunk\n"
                 if self.vlans and self.vlans != interface['vlans']:
                     vlans = ",".join(str(vlan["id"]) for vlan in interface['vlans'])
                     script += f"switchport trunk allowed vlan {vlans}\n"
+            script += " exit\n"
+        script += "-" * 50 + "\n\n"
+
+        script += "Interfaces Access Configuration:\n"
+        script += "-" * 50 + "\n"
+        for interface in self.interfaces:
+            script += f"interface {interface['name']}\n"
+            if interface["mode"] == "access":
+                script += f"switchport mode access\n"
+                script += f"switchport access vlan {interface['vlans']}\n"
             script += " exit\n"
         script += "-" * 50 + "\n\n"
 
