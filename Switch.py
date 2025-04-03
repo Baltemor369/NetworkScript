@@ -67,6 +67,20 @@ class Switch:
             return True
         return False
 
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "vtp": self.vtp,
+            "vlans": self.vlans,
+            "interfaces": self.interfaces,
+        }
+    
+    def load_config(self, config:dict):
+        self.name = config["name"]
+        self.vtp = config["vtp"]
+        self.vlans = config["vlans"]
+        self.interfaces = config["interfaces"]
+    
     def generate_config(self):
         """
         Génère un script de configuration.
@@ -76,23 +90,25 @@ class Switch:
         script += "Interfaces Trunk Configuration:\n"
         script += "-" * 50 + "\n"
         for interface in self.interfaces:
-            script += f"interface {interface['name']}\n"
             if interface["mode"] == "trunk":
+                script += f"interface {interface['name']}\n"
                 script += f"switchport mode trunk\n"
-                if self.vlans and self.vlans != interface['vlans']:
-                    vlans = ",".join(str(vlan["id"]) for vlan in interface['vlans'])
-                    script += f"switchport trunk allowed vlan {vlans}\n"
-            script += " exit\n"
+                
+                # if self.vlans:
+                    # vlans = ",".join(str(vlan["id"]) for vlan in interface['vlans'])
+                    # script += f"switchport trunk allowed vlan {vlans}\n"
+                
+                script += "exit\n"
         script += "-" * 50 + "\n\n"
 
         script += "Interfaces Access Configuration:\n"
         script += "-" * 50 + "\n"
         for interface in self.interfaces:
-            script += f"interface {interface['name']}\n"
             if interface["mode"] == "access":
+                script += f"interface {interface['name']}\n"
                 script += f"switchport mode access\n"
                 script += f"switchport access vlan {interface['vlans']}\n"
-            script += " exit\n"
+                script += "exit\n"
         script += "-" * 50 + "\n\n"
 
         script += "VTP Configuration :\n"
@@ -112,5 +128,5 @@ class Switch:
             script += "exit\n"
         script += "-" * 50 + "\n\n"
         
-        script += "\nFin de configuration des interfaces access."
+        script += "Fin de configuration\n"
         return script

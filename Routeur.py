@@ -76,6 +76,18 @@ class Routeur:
         
         return False
 
+    def to_dict(self):
+        return {
+            "hostname": self.hostname,
+            "interfaces": self.interfaces,
+            "routes": self.routes,
+        }
+    
+    def load_config(self, config:dict):
+        self.hostname = config["hostname"]
+        self.interfaces = config["interfaces"]
+        self.routes = config["routes"]
+
     def generate_config(self):
         """
         Génère un script de configuration.

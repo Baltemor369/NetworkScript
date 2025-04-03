@@ -1,6 +1,6 @@
 import json
 
-def int_input(question:str, min:int=None, max:int=None):
+def int_input(question:str, min=None, max:int=None):
     while True:
         try:
             number = int(input(question))

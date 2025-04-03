@@ -7,13 +7,13 @@ from Routeur import Routeur
 print('-'*10 + " Network Configuration " + "-"*10+"\n")
 #TODO load config from the file
 net = Network("localhost")
+net.load_config(load_config(FILE))
 
 while True:
     print("\n" + MAIN_MENU)
     choice = input("=> ")
     if choice == "0":
-        #TODO transformer objet net en dict
-        #TODO save net configuration
+        save_config(FILE, net.to_dict())
         break
     elif choice == "1":
         # ----- Config du network -----
@@ -29,8 +29,7 @@ while True:
         # ----- Config du switch -----
         #TODO regex checking onname
         switch_name = input("Nom du Switch : ")
-        switch_nb_int = int_input("Nombre d'interface : ",1,48)
-        sw = Switch(switch_name, switch_nb_int)
+        sw = Switch(switch_name)
         net.add_switch(sw)
         
         while True:
@@ -64,15 +63,8 @@ while True:
                 nb_trunks = int_input("Nombre de lien trunk", 0)
 
                 vlans = []
-                _ = 1
-                while _ > 0:
-                    _ = int_input("ID d'une VLAN autorisé (0 Tous, -1 stop) : ", -1)
-                    if _ == 0:
-                        vlans = sw.vlans
-                        break
-                    elif _ == -1:
-                        break
-                    vlans.append(_)
+                V = input("VLANs autoriser sur le trunk:")
+                V = V.split(" ")
 
                 for _ in range(nb_trunks):
                     interface = input("Nom de l'interface (ex GigabitEthernet0/1): ")
@@ -90,8 +82,8 @@ while True:
             elif choice == "5":
                 # ----- Config Access Interface ------
                 #TODO regex checking intf
-                access_vlan = int_input("ID VLAN: ", 0)
                 access_intf = input("Nom de l'interface (ex GigabitEthernet0/1): ")
+                access_vlan = int_input("ID VLAN: ", 0)
 
                 print(sw.add_interface(access_intf,"access", access_vlan))
     
