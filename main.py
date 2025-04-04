@@ -19,33 +19,10 @@ def del_switch(net:Network):
     if any(switch_name == sw.name for sw in net.switchs):
         net.del_switch(switch_name)
 
-# Ajouter un routeur au network
-def add_routeur(net:Network):
-    #TODO regex checking
-    router_name = input("Nom du Routeur : ")
-    if not any(router_name == rt.name for rt in net.routeurs):
-        rt = Routeur(router_name)
-        net.add_routeur(rt)
-
-def del_routeur(net:Network):
-    #TODO regex checking
-    router_name = input("Nom du Routeur : ")
-    if any(router_name == rt.name for rt in net.routeurs):
-        net.del_routeur(router_name)
-
-# afficher network config
-def network_config(net:Network):
-    print(net.generate_config())
-
 # afficher list switch
 def listing_switch(net:Network):
     for sw in net.switchs:
         print(sw.generate_config())
-
-# afficher list routeur
-def listing_routeur(net:Network):
-    for rt in net.routeurs:
-        print(rt.generate_config())
 
 # config VLANs
 def config_vlans(sw:Switch):
@@ -92,6 +69,57 @@ def config_access_intf(sw:Switch):
 
     print(sw.add_interface(access_intf,"access", access_vlan))
 
+# modify a switch
+def modify_switch(net:Network):
+    sw_name = input("Nom du switch :")
+    target_sw = None
+    for sw in net.switchs:
+        if sw.name == sw_name:
+            target_sw = sw
+    
+    if target_sw:
+        while True:
+            print(SWITCH_MODIFY_MENU)
+            choice = input("=> ")
+            print("\n")
+
+            if choice == "0":
+                break
+            elif choice == "1":
+                config_VTP(target_sw)
+                pass
+            elif choice == "2":
+                config_vlans(target_sw)
+                pass
+            elif choice == "3":
+                config_trunk_intf(target_sw)
+                pass
+            elif choice == "4":
+                config_access_intf(target_sw)
+                pass
+
+
+
+
+# Ajouter un routeur au network
+def add_routeur(net:Network):
+    #TODO regex checking
+    router_name = input("Nom du Routeur : ")
+    if not any(router_name == rt.name for rt in net.routeurs):
+        rt = Routeur(router_name)
+        net.add_routeur(rt)
+
+def del_routeur(net:Network):
+    #TODO regex checking
+    router_name = input("Nom du Routeur : ")
+    if any(router_name == rt.name for rt in net.routeurs):
+        net.del_routeur(router_name)
+
+# afficher list routeur
+def listing_routeur(net:Network):
+    for rt in net.routeurs:
+        print(rt.generate_config())
+
 # config interface
 def config_routeur_intf(rt:Routeur):
     intf = input("Nom de l'interface : ")
@@ -111,11 +139,21 @@ def config_static_route(rt:Routeur):
     next_hop = input("Passerelle: ")
     print(rt.add_route(network_add, subnet_mask, next_hop))
 
+
+
+# afficher network config
+def network_config(net:Network):
+    print(net.generate_config())
+
+
+
+
 ###########################
 
 print('-'*10 + " Network Configuration " + "-"*10+"\n\n")
 net = Network("localhost")
 _ = load_config(FILE)
+
 if not _[0] :
     print(_[1])
 else:
@@ -158,6 +196,7 @@ else:
                     del_switch(net)
                     pass
                 elif choice == "4":
+                    modify_switch(net)
                     pass
             pass
         elif choice == "3":
