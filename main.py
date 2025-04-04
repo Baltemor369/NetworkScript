@@ -243,5 +243,7 @@ else:
                 elif choice == "3":
                     del_routeur(net)
                     pass
-
+                elif choice == "3":
+                    modify_routeur(net)
+                    pass
             pass
