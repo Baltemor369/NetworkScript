@@ -24,10 +24,8 @@ ROUTEUR_MENU = "--- ROUTEUR MENU ---\n" \
     "4. Modifier Routeur\n\n" \
     "0. Sortir\n"
 ROUTEUR_MODIFY_MENU = "--- ROUTEUR MODIFY MENU ---\n" \
-    "1. Routeur Liste\n" \
-    "2. Ajouter un Routeur\n" \
-    "3. Supprimer Routeur\n" \
-    "4. Modifier Routeur\n\n" \
+    "1. Interface config\n" \
+    "2. Static Route\n" \
     "0. Sortir\n"
 
 HOST_MENU = "--- HOST MENU ---\n" \

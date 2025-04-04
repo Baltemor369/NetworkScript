@@ -71,7 +71,7 @@ def config_access_intf(sw:Switch):
 
 # modify a switch
 def modify_switch(net:Network):
-    sw_name = input("Nom du switch :")
+    sw_name = input("Nom du switch: ")
     target_sw = None
     for sw in net.switchs:
         if sw.name == sw_name:
@@ -138,6 +138,29 @@ def config_static_route(rt:Routeur):
     subnet_mask = input("Masque de sous-réseau: ")
     next_hop = input("Passerelle: ")
     print(rt.add_route(network_add, subnet_mask, next_hop))
+
+def modify_routeur(net:Network):
+    rt_name = input("Nom du routeur: ")
+    target_rt = None
+    for rt in net.routeurs:
+        if rt.hostname == rt_name:
+            target_rt = rt
+    
+    if target_rt:
+
+        while True:
+            print(ROUTEUR_MODIFY_MENU)
+            choice = input("=> ")
+            print("\n")
+
+            if choice == "0":
+                break
+            elif choice == "1":
+                config_routeur_intf(target_rt)
+                pass
+            elif choice == "2":
+                config_static_route(target_rt)
+                pass
 
 
 
