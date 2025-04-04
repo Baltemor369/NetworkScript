@@ -10,14 +10,18 @@ class Network:
     def add_switch(self, switch:Switch):
         self.switchs.append(switch)
 
-    def del_switch(self, switch:Switch):
-        self.switchs.remove(switch)
+    def del_switch(self, sw_name:str):
+        for switch in self.switchs:
+            if switch.name == sw_name:
+                self.switchs.remove(switch)
 
     def add_routeur(self, rt:Routeur):
         self.routeurs.append(rt)
     
-    def del_routeur(self, rt:Routeur):
-        self.routeurs.remove(rt)
+    def del_routeur(self, rt_name:str):
+        for rt in self.routeurs:
+            if rt.name == rt_name:
+                self.routeurs.remove(rt)
     
     def to_dict(self):
         return {

@@ -36,11 +36,18 @@ def subnet_mask_to_cidr(mask: str) -> str:
     return f"/{cidr}"
 
 def save_config(file:str, data:dict):
-    # Écriture dans un fichier JSON
-    with open(file, "w") as fichier:
-        json.dump(data, fichier, indent=4)  # `indent=4` pour une meilleure lisibilité
+    try:
+        # Écriture dans un fichier JSON
+        with open(file, "w") as fichier:
+            json.dump(data, fichier, indent=4)  # `indent=4` pour une meilleure lisibilité
+        return True, ""
+    except Exception as e:
+        return False, e
 
 def load_config(file: str) -> dict:
-    # Lecture depuis le fichier JSON
-    with open(file, "r") as fichier:
-        return json.load(fichier)
+    try:
+        # Lecture depuis le fichier JSON
+        with open(file, "r") as fichier:
+            return True, json.load(fichier)
+    except Exception as e:
+        return False, e

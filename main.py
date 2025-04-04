@@ -8,15 +8,30 @@ from Routeur import Routeur
 def add_switch(net:Network):
     #TODO regex checking
     switch_name = input("Nom du Switch : ")
-    sw = Switch(switch_name)
-    net.add_switch(sw)
+    if not any(switch_name == sw.name for sw in net.switchs):
+        sw = Switch(switch_name)
+        net.add_switch(sw)
+
+def del_switch(net:Network):
+    #TODO regex checking
+    switch_name = input("Nom du Switch : ")
+    
+    if any(switch_name == sw.name for sw in net.switchs):
+        net.del_switch(switch_name)
 
 # Ajouter un routeur au network
 def add_routeur(net:Network):
     #TODO regex checking
     router_name = input("Nom du Routeur : ")
-    rt = Routeur(router_name)
-    net.add_routeur(rt)
+    if not any(router_name == rt.name for rt in net.routeurs):
+        rt = Routeur(router_name)
+        net.add_routeur(rt)
+
+def del_routeur(net:Network):
+    #TODO regex checking
+    router_name = input("Nom du Routeur : ")
+    if any(router_name == rt.name for rt in net.routeurs):
+        net.del_routeur(router_name)
 
 # afficher network config
 def network_config(net:Network):
@@ -98,40 +113,73 @@ def config_static_route(rt:Routeur):
 
 ###########################
 
-print('-'*10 + " Network Configuration " + "-"*10+"\n")
+print('-'*10 + " Network Configuration " + "-"*10+"\n\n")
 net = Network("localhost")
-net.load_config(load_config(FILE))
-
-while True:
-    print("\n" + MAIN_MENU)
-    choice = input("=> ")
-    if choice == "0":
-        save_config(FILE, net.to_dict())
-        break
-    elif choice == "1":
-        print(net.generate_config())
-        pass
-    elif choice == "2":
-        
-        # SWITCH 
-        while True:
-            print("\n" + SWITCH_MENU)
-            choice = input("=> ")
-            if choice == "0":
-                break
-            elif choice == "1":
-                pass
-
-        pass
-    elif choice == "3":
-        
-        # ROUTEUR
-        while True:
-            print("\n" + ROUTEUR_MENU)
-            choice = input("=> ")
-            if choice == "0":
-                break
-            elif choice == "1":
-                pass
+_ = load_config(FILE)
+if not _[0] :
+    print(_[1])
+else:
+    net.load_config(_[1])
+    while True:
+        print(MAIN_MENU)
+        choice = input("=> ")
+        print("\n")
+        if choice == "0":
+            print("sauvegarde de la config réseau...")
+            _ = save_config(FILE, net.to_dict())
+            if not _ :
+                print(_[1])
+                input("Entrer pour quitter")
+            else:
+                print("[OK]")
+            break
+        elif choice == "1":
+            print(net.generate_config())
+            pass
+        elif choice == "2":
             
-        pass
+            # SWITCH 
+            while True:
+                print(SWITCH_MENU)
+                choice = input("=> ")
+                print("\n")
+                if choice == "0":
+                    break
+                elif choice == "1":
+                    if net.switchs:
+                        for sw in net.switchs:
+                            print(sw.generate_config())
+                    else:
+                        print("Aucun Switch enregistré")
+                elif choice == "2":
+                    add_switch(net)
+                    pass
+                elif choice == "3":
+                    del_switch(net)
+                    pass
+                elif choice == "4":
+                    pass
+            pass
+        elif choice == "3":
+            
+            # ROUTEUR
+            while True:
+                print("\n" + ROUTEUR_MENU)
+                choice = input("=> ")
+                print("\n")
+                if choice == "0":
+                    break
+                elif choice == "1":
+                    if net.routeurs:
+                        for rt in net.routeurs:
+                            print(rt.generate_config())
+                    else:
+                        print("Aucun Routeur enregistré")
+                elif choice == "2":
+                    add_routeur(net)
+                    pass
+                elif choice == "3":
+                    del_routeur(net)
+                    pass
+
+            pass

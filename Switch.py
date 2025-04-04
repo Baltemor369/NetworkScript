@@ -108,7 +108,7 @@ class Switch:
                 script += "exit\n"
         script += "-" * 50 + "\n\n"
 
-        script += "Interfaces Access Configuration:\n"
+        script += "\nInterfaces Access Configuration:\n"
         script += "-" * 50 + "\n"
         for interface in self.interfaces:
             if interface["mode"] == "access":
@@ -135,5 +135,4 @@ class Switch:
             script += "exit\n"
         script += "-" * 50 + "\n\n"
         
-        script += "Fin de configuration\n"
         return script
