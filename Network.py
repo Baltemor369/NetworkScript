@@ -5,13 +5,19 @@ class Network:
     def __init__(self, name):
         self.name = name
         self.switchs:list[Switch] = []
-        self.routeurs: list[Routeur] = []
+        self.routeurs:list[Routeur] = []
     
     def add_switch(self, switch:Switch):
         self.switchs.append(switch)
 
     def del_switch(self, switch:Switch):
         self.switchs.remove(switch)
+
+    def add_routeur(self, rt:Routeur):
+        self.routeurs.append(rt)
+    
+    def del_routeur(self, rt:Routeur):
+        self.routeurs.remove(rt)
     
     def to_dict(self):
         return {
